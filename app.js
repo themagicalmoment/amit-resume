@@ -12,7 +12,11 @@ app.use(function(req, res, next) {
 });
 
 app.use('/static', express.static('public'));
-app.post('/download', function(req, res, next){
+
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+
+app.get('/download', function(req, res, next){
   var file = __dirname + '/files/samplefile.docx';
 
   var filename = path.basename(file);
@@ -34,7 +38,7 @@ app.get('/email', function(req,res,next){
 
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
-})
-console.log('Server running at http://127.0.0.1:1337/');
+app.listen(port, ip);
+console.log('Server running on http://%s:%s', ip, port);
+
+module.exports = app ;
